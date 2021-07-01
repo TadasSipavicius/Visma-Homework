@@ -1,3 +1,4 @@
+<!-- Tadas Sipavičius -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +10,44 @@
   
   <div class='root-container'>
       <div class='add-new-pizza-container'>
+          <form>
+              <h3>Enter New Pizza Details:</h3>
 
+              
+              <label for='pizza-name'>Pizza name:</label><br>
+              <p id="name-validation"></p>
+              <input type="text" id="pizza-name" placeholder="Enter pizza name..."
+                     maxlength="30"/><br>
+
+              <label for="pizza-price">Price:</label><br>
+              <p id="price-validation"></p>
+              <input type="number" id="pizza-price" step=".01" required 
+                     placeholder="Enter pizza price..." min="0"><br>
+
+              <label for="pizza-heat">Heat:</label><br>
+              <p id="heat-validation"></p>
+              <input type="number" id="pizza-heat" placeholder="Enter pizza heat from 1 to 3..."
+                     min="1" max="3"><br>
+            
+              <label for="pizza-toppings">Toppings:</label><br>
+              <p id="toppings-validation"></p>
+              <input type="text" id="pizza-toppings" placeholder="Enter pizza toppings..."
+                     required><br>
+              <!--
+              <label>Nuotrauka:</label><br>
+              <p id="heat-validation"></p>
+              <input type="image"><br><br>
+              -->
+
+
+              <button id="save-button">Add Pizza</button>
+              
+          </form>
       </div>
-      <div class="pizza-menu">
+      <div id='pizza-menu'>
           
       </div>
   </div>
-  
   <script src="./main.js"></script>
 </body>
 </html>
