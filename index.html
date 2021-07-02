@@ -32,7 +32,11 @@
               <label for="pizza-toppings">Toppings:</label><br>
               <p id="toppings-validation"></p>
               <input type="text" id="pizza-toppings" placeholder="Enter pizza toppings..."
-                     required><br>
+                     required>             
+              <button id="more-toppings-button" onclick="addToppings();return false">
+                        Add one more topping</button><br>
+              <div id="added-topping"></div>
+
               <!--
               <label>Nuotrauka:</label><br>
               <p id="heat-validation"></p>
