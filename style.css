@@ -8,3 +8,9 @@
 p{
     color: red;
 }
+img{
+    height: 30px;
+}
+ul li{
+    display: inline-block;
+}
