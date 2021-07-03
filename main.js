@@ -18,7 +18,6 @@ const addPizza = (ev) =>{
 }
 
 const validationWithAllEdgeCases = (pizza) =>{
-    console.log(pizza.price);
     if(pizza.name === ""){
         var validationName = document.getElementById("name-validation");
         validationName.innerHTML = " * You must type a Pizza Name" ;
@@ -64,10 +63,12 @@ const validationWithAllEdgeCases = (pizza) =>{
         resetValidation();
         pizzas.push(pizza);
         document.querySelector('form').reset();
-        let pre = document.querySelector('#pizza-menu');
-        pre.textContent = '\n' + JSON.stringify(pizzas, '\t', 2);
-    
+        
         sessionStorage.setItem('MyPizzaMenu', JSON.stringify(pizzas) );
+        var session = JSON.parse(sessionStorage.getItem("MyPizzaMenu"))
+        showPizzaTable(session);
+        toppingsArray = [];
+        photosArray = [];
     }
 }
 
@@ -85,6 +86,10 @@ const resetValidation = () => {
 
 const checkUniquePizzaName = (newPizzaName) => {
 
+    if(pizzas.length === 0){
+        return false;
+    }
+
     for(let i = 0; i < pizzas.length; i++){
         if(pizzas[i].name === newPizzaName){
             return true;
@@ -98,7 +103,6 @@ const addToppings = () => {
     var pizzaTopping = document.getElementById("pizza-toppings").value;
     if(pizzaTopping !== ""){
         toppingsArray.push(pizzaTopping);
-        console.log(toppingsArray);
         document.getElementById('pizza-toppings').value = "";
         var displayTopping = document.getElementById("added-topping");
         displayTopping.innerHTML = "Added " + `${pizzaTopping}` + " topping";
@@ -142,7 +146,7 @@ const addAndRemovePhotos = (checkbox) => {
         }
     }
     if(!checkbox.checked){
-        
+
         switch(parseInt(checkbox.id)){
             case 1:
                 var index = photosArray.indexOf("Pizza.svg");
@@ -186,7 +190,112 @@ const removePhoto = (index) => {
         photosArray.splice(index, 1);
     }
 }
-console.log(photosArray)
+
+const showPizzaHeader = (table, row) => {
+
+    var th_1 = document.createElement('th');
+    var th_2 = document.createElement('th');
+    var th_3 = document.createElement('th');
+    var th_4 = document.createElement('th');
+    var th_5 = document.createElement('th');
+    var text_1 = document.createTextNode("Name");
+    var text_2 = document.createTextNode("Price");
+    var text_3 = document.createElement("img");
+    text_3.src = "./Images/chilli.svg";
+    var text_4 = document.createTextNode('Toppings');
+    var text_5 = document.createTextNode('Photo');
+
+    th_1.appendChild(text_1);
+    th_2.appendChild(text_2);
+    th_3.appendChild(text_3);
+    th_4.appendChild(text_4);
+    th_5.appendChild(text_5);
+
+    row.appendChild(th_1);
+    row.appendChild(th_2);
+    row.appendChild(th_3);
+    row.appendChild(th_4);
+    row.appendChild(th_5);
+
+
+    table.appendChild(row);
+}
+const showPizzaTable = (session) => {
+
+    var container = document.getElementById("pizza-menu");
+    var table = document.getElementById("menu-table");
+    table.innerHTML = "";
+    var row = document.createElement("tr");
+    showPizzaHeader(table, row);
+
+
+    for(let i = 0; i < session.length; i++){
+        var row2 = document.createElement("tr");
+        row2.id = 11 + i;
+
+        var button = document.createElement("button");
+        button.innerHTML = "Remove Item";
+        button.id = 21 + i;
+        button.addEventListener("click", function(){
+            deleteItem(button.id);
+        }, false);
+        for(let j = 0; j < 5; j++){
+            var cell = document.createElement("td");
+            if(j == 0){
+                var cellText = document.createTextNode(session[i].name);
+                cell.appendChild(cellText);
+                row2.appendChild(cell);
+            }
+            if(j == 1){
+                var cellText = document.createTextNode(session[i].price);
+                cell.appendChild(cellText);
+                row2.appendChild(cell);
+            }
+            if(j == 2){
+                var cellText = document.createTextNode(session[i].heat);
+                cell.appendChild(cellText);
+                row2.appendChild(cell);
+            }
+            if(j == 3){
+                var cellText = document.createTextNode(session[i].toppings);
+                cell.appendChild(cellText);
+                row2.appendChild(cell);
+            }
+            if(j == 4){
+                displayPhotos(session[i], cell);
+                row2.appendChild(cell);
+            }
+        }
+        table.appendChild(row2);
+        table.appendChild(button);
+    }
+    container.appendChild(table);
+}
+
+const deleteItem = (rowid) =>{
+   // console.log(row2);
+    //console.log(table.rows);
+   // var index = parseInt(buttonid - 10);
+   // console.log(index);
+   // console.log(table.rows[index])
+    var something = document.getElementById((parseInt(rowid) - 10));
+    console.log(something);
+    something.remove();
+}
+const displayPhotos = (session, cell) =>{
+
+    for(let i = 0; i < session.photos.length; i++){
+        var img = document.createElement("img");
+        img.src = "./Images/" + `${session.photos[i]}`
+        cell.appendChild(img);
+    }
+}
+
+const removeItem = (session) =>{
+    for(let i = 0; i < session.lenght; i++){
+
+    }
+}
 document.addEventListener('DOMContentLoaded', ()=>{
         document.getElementById('save-button').addEventListener('click', addPizza);
     });

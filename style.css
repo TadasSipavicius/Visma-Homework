@@ -8,9 +8,15 @@
 p{
     color: red;
 }
+th img{
+    height: 20px;
+}
 img{
     height: 30px;
 }
 ul li{
     display: inline-block;
+}
+#pizza-menu table{
+    border: 1px solid black;
 }
