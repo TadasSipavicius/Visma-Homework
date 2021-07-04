@@ -2,9 +2,13 @@ let pizzas = [];
 let toppingsArray=[];
 let photosArray = [];
 
+
+//Main function, which is triggered after the Add Pizza button is pressed
 const addPizza = (ev) =>{
     
     ev.preventDefault();
+
+    //Pizza constructor
     let pizza = {
         name: document.getElementById("pizza-name").value,
         price: parseFloat(document.getElementById("pizza-price").value).toFixed(2),
@@ -12,11 +16,15 @@ const addPizza = (ev) =>{
         toppings: toppingsArray,
         photos: photosArray
     }
+
+    //Checks the validation of the all inputs
     validationWithAllEdgeCases(pizza);
     var displayTopping = document.getElementById("added-topping");
     displayTopping.innerHTML = "";
 }
 
+
+//Function, which checks all possible edge cases
 const validationWithAllEdgeCases = (pizza) =>{
     if(pizza.name === ""){
         var validationName = document.getElementById("name-validation");
@@ -59,19 +67,23 @@ const validationWithAllEdgeCases = (pizza) =>{
         validationPhotos.innerHTML = " * You must declare at least 3 photos OR none";
     }
     else{
-        
+
+        //If all input requirements are passed, then pizza is added
         resetValidation();
         pizzas.push(pizza);
-        document.querySelector('form').reset();
         
         sessionStorage.setItem('MyPizzaMenu', JSON.stringify(pizzas) );
         var session = JSON.parse(sessionStorage.getItem("MyPizzaMenu"))
         showPizzaTable(session);
         toppingsArray = [];
         photosArray = [];
+
+        //Form is cleared after the pizza is added
+        document.querySelector('form').reset();
     }
 }
 
+// Resets validation text to empty string
 const resetValidation = () => {
     var validationName = document.getElementById("name-validation");
     validationName.innerHTML = "";
@@ -84,6 +96,7 @@ const resetValidation = () => {
 
 }
 
+// Checks if Pizza with exact name exists in the menu
 const checkUniquePizzaName = (newPizzaName) => {
 
     if(pizzas.length === 0){
@@ -98,6 +111,7 @@ const checkUniquePizzaName = (newPizzaName) => {
     return false;
 }
 
+// Function, where the user can add multiple toppings in the pizza description
 const addToppings = () => {
 
     var pizzaTopping = document.getElementById("pizza-toppings").value;
@@ -116,6 +130,7 @@ const addToppings = () => {
 
 }
 
+// Function where photos checkboxes are handled
 const addAndRemovePhotos = (checkbox) => {
 
     if(checkbox.checked){
@@ -185,12 +200,14 @@ const addAndRemovePhotos = (checkbox) => {
     }
 }
 
+// Removes photo from the array if the checkbox is unchecked
 const removePhoto = (index) => {
     if (index !== -1) {
         photosArray.splice(index, 1);
     }
 }
 
+// Pizza table header
 const showPizzaHeader = (table, row) => {
 
     var th_1 = document.createElement('th');
@@ -220,6 +237,8 @@ const showPizzaHeader = (table, row) => {
 
     table.appendChild(row);
 }
+
+// After the pizza is added the table will be reloaded
 const showPizzaTable = (session) => {
 
     var container = document.getElementById("pizza-menu");
@@ -237,7 +256,7 @@ const showPizzaTable = (session) => {
         button.innerHTML = "Remove Item";
         button.id = 21 + i;
         button.addEventListener("click", function(){
-            deleteItem(button.id);
+            deleteItem(i);
         }, false);
         for(let j = 0; j < 5; j++){
             var cell = document.createElement("td");
@@ -272,16 +291,24 @@ const showPizzaTable = (session) => {
     container.appendChild(table);
 }
 
-const deleteItem = (rowid) =>{
-   // console.log(row2);
-    //console.log(table.rows);
-   // var index = parseInt(buttonid - 10);
-   // console.log(index);
-   // console.log(table.rows[index])
-    var something = document.getElementById((parseInt(rowid) - 10));
-    console.log(something);
-    something.remove();
+// Not a complete working deleting Item function
+const deleteItem = (index) =>{
+
+    var line = document.getElementById(index + 11);
+    var button = document.getElementById(index + 21);
+
+    if((index + 21) === 21){
+        button.parentNode.removeChild(button.parentNode.childNodes[index + 1]);
+        button.remove();
+    }
+    else{
+        button.parentNode.removeChild(button.parentNode.childNodes[index + 2]);
+        button.remove();
+    }
+
 }
+
+// Displaying photos as Images
 const displayPhotos = (session, cell) =>{
 
     for(let i = 0; i < session.photos.length; i++){
@@ -291,11 +318,5 @@ const displayPhotos = (session, cell) =>{
     }
 }
 
-const removeItem = (session) =>{
-    for(let i = 0; i < session.lenght; i++){
 
-    }
-}
-document.addEventListener('DOMContentLoaded', ()=>{
-        document.getElementById('save-button').addEventListener('click', addPizza);
-    });
+document.getElementById('save-button').addEventListener('click', addPizza);
